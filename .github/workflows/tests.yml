@@ -2,8 +2,6 @@ name: tests
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 permissions:
@@ -50,10 +48,13 @@ jobs:
       - name: Run PHP quality checks and tests
         run: composer test
 
+      - name: Check front-end formatting and linting
+        run: npm run check
+
       - name: Type-check TypeScript
         run: npm run types:check
 
-      - name: Lint front-end
+      - name: Lint front-end with ESLint
         run: npm run lint
 
       - name: Run Vitest
@@ -61,3 +62,57 @@ jobs:
 
       - name: Build assets
         run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_sqlite, sqlite3
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Prepare SQLite database
+        run: |
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright
+        run: npm run e2e
