@@ -4,6 +4,7 @@ import type {
     Locale,
     SupportedLocale,
     Translations,
+    UserMode,
 } from '@/types';
 
 declare module 'react' {
@@ -24,6 +25,8 @@ declare module '@inertiajs/core' {
             supportedLocales: SupportedLocale[];
             translations: Translations;
             auth: Auth;
+            activeMode: UserMode | null;
+            turnstileSiteKey: string | null;
             sidebarOpen: boolean;
             [key: string]: unknown;
         };

@@ -11,9 +11,10 @@ class SetLocale
     /**
      * Apply the locale chosen by the visitor.
      *
-     * Resolution order: session, cookie, configured default. Only locales
-     * listed in `config('app.supported_locales')` are accepted, so a forged
-     * value can never reach the translator.
+     * Resolution order: session, authenticated user preference, cookie,
+     * configured default. Only locales listed in
+     * `config('app.supported_locales')` are accepted, so a forged value can
+     * never reach the translator.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -21,6 +22,7 @@ class SetLocale
         $fallback = config('app.locale', 'fr');
 
         $locale = $request->session()->get('locale')
+            ?? data_get($request->user(), 'locale')
             ?? $request->cookie('locale')
             ?? $fallback;
 

@@ -25,7 +25,7 @@ class SecurityTest extends TestCase
             'confirmPassword' => true,
         ]);
 
-        $user = User::factory()->create();
+        $user = $this->userWithRole('admin');
 
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
@@ -114,5 +114,28 @@ class SecurityTest extends TestCase
         $response
             ->assertSessionHasErrors('current_password')
             ->assertRedirect(route('security.edit'));
+    }
+
+    public function test_two_factor_management_endpoints_are_reserved_for_staff()
+    {
+        $this->seedRoles();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->withSession(['auth.password_confirmed_at' => time()])
+            ->post(route('two-factor.enable'))
+            ->assertForbidden();
+
+        $this->assertNull($user->fresh()->two_factor_secret);
+
+        $staff = $this->userWithRole('admin');
+
+        $this->actingAs($staff)
+            ->withSession(['auth.password_confirmed_at' => time()])
+            ->post(route('two-factor.enable'))
+            ->assertRedirect();
+
+        $this->assertNotNull($staff->fresh()->two_factor_secret);
     }
 }

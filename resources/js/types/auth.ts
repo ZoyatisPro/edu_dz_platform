@@ -1,9 +1,19 @@
+export type UserMode = 'student' | 'parent' | 'teacher' | 'assistant' | 'admin';
+
+export type TeacherRequestStatus = 'pending' | 'approved' | 'rejected';
+
 export type User = {
     id: number;
     name: string;
     email: string;
+    phone?: string | null;
     avatar?: string;
     email_verified_at: string | null;
+    locale?: string | null;
+    roles: UserMode[];
+    active_mode: UserMode | null;
+    is_staff: boolean;
+    teacher_request_status: TeacherRequestStatus | null;
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
@@ -11,7 +21,7 @@ export type User = {
 };
 
 export type Auth = {
-    user: User;
+    user: User | null;
 };
 
 export type Passkey = {

@@ -29,6 +29,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Demonstration Administrator
+    |--------------------------------------------------------------------------
+    |
+    | Credentials used by the admin seeder. Keeping them in the config avoids
+    | calling env() from the seeder, which would break when the config is
+    | cached. Override them in the environment for production deployments.
+    |
+    */
+
+    'admin' => [
+        'name' => env('ADMIN_NAME', 'Administrateur'),
+        'email' => env('ADMIN_EMAIL', 'admin@edu-dz.test'),
+        'password' => env('ADMIN_PASSWORD', 'password'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Supported Locales
     |--------------------------------------------------------------------------
     |

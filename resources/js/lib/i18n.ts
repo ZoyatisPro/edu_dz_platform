@@ -5,6 +5,7 @@ export function translate(
     translations: Translations,
     key: string,
     fallback?: string,
+    replacements?: Record<string, string | number>,
 ): string {
     const value = key
         .split('.')
@@ -16,14 +17,29 @@ export function translate(
             return carry[segment];
         }, translations);
 
-    return typeof value === 'string' ? value : (fallback ?? key);
+    if (typeof value !== 'string') {
+        return fallback ?? key;
+    }
+
+    if (!replacements) {
+        return value;
+    }
+
+    return Object.entries(replacements).reduce(
+        (result, [name, replacement]) =>
+            result.replaceAll(`:${name}`, String(replacement)),
+        value,
+    );
 }
 
 export function useTranslation() {
     const { locale, direction, translations } = usePage().props;
 
-    const t = (key: string, fallback?: string): string =>
-        translate(translations, key, fallback);
+    const t = (
+        key: string,
+        fallback?: string,
+        replacements?: Record<string, string | number>,
+    ): string => translate(translations, key, fallback, replacements);
 
     return { t, locale, direction: direction as Direction };
 }

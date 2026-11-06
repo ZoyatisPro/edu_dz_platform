@@ -158,11 +158,14 @@ return [
     'ulid' => 'Le champ :attribute doit être un ULID valide.',
     'uuid' => 'Le champ :attribute doit être un UUID valide.',
 
+    'turnstile' => 'La vérification anti-robots a échoué. Réessayez.',
+
     'custom' => [],
 
     'attributes' => [
         'name' => 'nom',
         'email' => 'adresse e-mail',
+        'phone' => 'téléphone',
         'password' => 'mot de passe',
         'password_confirmation' => 'confirmation du mot de passe',
         'current_password' => 'mot de passe actuel',

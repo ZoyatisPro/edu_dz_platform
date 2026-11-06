@@ -158,11 +158,14 @@ return [
     'ulid' => 'يجب أن يكون حقل :attribute قيمة ULID صالحة.',
     'uuid' => 'يجب أن يكون حقل :attribute قيمة UUID صالحة.',
 
+    'turnstile' => 'فشل التحقق من الروبوتات. يرجى المحاولة مجددًا.',
+
     'custom' => [],
 
     'attributes' => [
         'name' => 'الاسم',
         'email' => 'البريد الإلكتروني',
+        'phone' => 'الهاتف',
         'password' => 'كلمة المرور',
         'password_confirmation' => 'تأكيد كلمة المرور',
         'current_password' => 'كلمة المرور الحالية',
