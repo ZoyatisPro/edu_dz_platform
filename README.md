@@ -52,8 +52,9 @@ L'interface est disponible en français (`fr`) et en arabe (`ar`). Le choix est 
 et dans un cookie, puis appliqué par le middleware `SetLocale`. Le sens d'affichage (`ltr`/`rtl`) et
 les traductions sont partagés avec Inertia depuis `HandleInertiaRequests`.
 
-Les traductions vivent dans `lang/fr/app.php` et `lang/ar/app.php`. Un test vérifie que les deux
-fichiers exposent exactement les mêmes clés.
+Les traductions vivent dans `lang/fr` et `lang/ar` : interface (`app.php`), messages de validation,
+authentification, mots de passe et pagination. Des tests vérifient que les deux langues exposent
+exactement les mêmes clés et couvrent tous les messages utilisés par le framework.
 
 ## Thème
 
